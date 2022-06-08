@@ -1,6 +1,7 @@
 from shared import (
     ensure_out_folder,
     get_timestamp,
+    prettify_xml,
     simple_xor,
 )
 import logging
@@ -47,12 +48,18 @@ def main(args: list[str]) -> int:
     dezlibed = zlib.decompress(decoded[10:], -zlib.MAX_WBITS).decode()
     del decoded
 
+    # Pretty-print it.
+    logging.info("Prettifying the output...")
+    prettified = prettify_xml(dezlibed)
+    del dezlibed
+
+
     # Write to file.
     cur_ts = get_timestamp()
     filename = f"out/{cur_ts}-level_data.plist"
     logging.info(f"Writing result to {filename}")
     ensure_out_folder()
-    write_file(filename, dezlibed)
+    write_file(filename, prettified)
     logging.info("Done!")
     
     return 0

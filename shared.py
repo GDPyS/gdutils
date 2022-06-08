@@ -1,4 +1,5 @@
 # Shared code between scripts.
+from xml.etree import ElementTree
 import time
 import os
 
@@ -20,3 +21,10 @@ def simple_xor(string: str, key: int) -> str:
     return "".join(
         chr(ord(char) ^ key) for char in string
     )
+
+def prettify_xml(data: str) -> str:
+    """Prettifies an XML string."""
+
+    xml_obj = ElementTree.XML(data)
+    ElementTree.indent(xml_obj)
+    return ElementTree.tostring(xml_obj).decode()
