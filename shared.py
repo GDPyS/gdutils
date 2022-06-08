@@ -6,7 +6,7 @@ def ensure_out_folder() -> None:
     """Ensures the presence of the out folder, creating it if it does not
     exist."""
 
-    if not os.path.exists():
+    if not os.path.exists("out"):
         os.mkdir("out")
 
 def get_timestamp() -> int:

@@ -1,6 +1,7 @@
 from shared import (
     ensure_out_folder,
     get_timestamp,
+    simple_xor,
 )
 import logging
 import base64
@@ -37,15 +38,13 @@ def main(args: list[str]) -> int:
 
     # Base64 decode.
     logging.info("Decoding the data")
-    decoded = base64.b64decode(
-        file.replace("+", "-")
-            .replace("/", "_")
-    )
+    de_xored = simple_xor(file, 0xb)
+    decoded = base64.b64decode(de_xored, altchars='-_')
     del file
 
     # ZLIB decompression.
     logging.info("Decompressing the save data...")
-    dezlibed = zlib.decompress(decoded)
+    dezlibed = zlib.decompress(decoded[10:], -zlib.MAX_WBITS).decode()
     del decoded
 
     # Write to file.
